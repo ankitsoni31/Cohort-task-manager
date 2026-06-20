@@ -8,7 +8,7 @@ A clean and modern **Task Manager** web app built with HTML, CSS, and JavaScript
 
 ## 📸 Preview
 
-> *(Add a screenshot of your project here)*
+![Task Manager Preview](darkmode.png)
 
 ---
 
