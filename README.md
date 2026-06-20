@@ -2,7 +2,7 @@
 
 A clean and modern **Task Manager** web app built with HTML, CSS, and JavaScript — featuring a beautiful purple light/dark theme.
 
-🔗 **Live Demo:** [Click Here](https://ankitsoni31.github.io/task-manager)
+🔗 **Live Demo:** [Click Here](https://ankitsoni31.github.io/Cohort-task-manager/)
 
 ---
 
