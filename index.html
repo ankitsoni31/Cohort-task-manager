@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-clipboard-check"></i>
+            <h2>Task Manager</h2>
+        </div>
+        <!-- <hr> -->
+        <nav class="nav-menu">
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>All Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Pending</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Completed</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <header>
+            <section class="left-section">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <div class="header-content">
+                    <h1>Task Manager</h1>
+                    <p>Organize your tasks efficiently</p>
+                </div>
+            </section>
+            <section class="right-section">
+                <button class="menu-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <button class="theme-btn">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </section>
+        </header>
+        <section class="add-task">
+
+            <div class="task-heading">
+                <i class="fa-solid fa-bars-progress"></i>
+                <h2>Add New Task</h2>
+            </div>
+
+            <form>
+
+                <div class="input-group">
+                    <label for="task-title">Task Title</label>
+                    <input type="text" id="task-title" placeholder="Enter task title...">
+                </div>
+
+                <div class="input-group">
+                    <label for="category">Category</label>
+
+                    <select id="category">
+                        <option value="study">Study</option>
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="college">College</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="add-btn">
+                    + Add Task
+                </button>
+
+            </form>
+
+        </section>
+        <section class="stats">
+
+            <div class="stat-card total">
+                <i class="fa-solid fa-list"></i>
+
+                <div class="stat-info">
+                    <h3>Total Tasks</h3>
+                    <p>0</p>
+                </div>
+            </div>
+
+            <div class="stat-card pending">
+                <i class="fa-regular fa-clock"></i>
+
+                <div class="stat-info">
+                    <h3>Pending Tasks</h3>
+                    <p>0</p>
+                </div>
+            </div>
+
+            <div class="stat-card completed">
+                <i class="fa-solid fa-circle-check"></i>
+
+                <div class="stat-info">
+                    <h3>Completed Tasks</h3>
+                    <p>0</p>
+                </div>
+            </div>
+
+            <div class="stat-card category">
+                <i class="fa-regular fa-folder"></i>
+
+                <div class="stat-info">
+                    <h3>Categories</h3>
+                    <p>0</p>
+                </div>
+            </div>
+
+        </section>
+        <section class="filters">
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search tasks...">
+            </div>
+
+            <select class="category-filter">
+                <option>All Categories</option>
+                <option>Study</option>
+                <option>Work</option>
+                <option>Personal</option>
+                <option>College</option>
+            </select>
+
+            <select class="status-filter">
+                <option>All Status</option>
+                <option>Pending</option>
+                <option>Completed</option>
+            </select>
+        </section>
+        <section class="tasks-container">
+        </section>
+        <div class="clear-all-wrapper">
+            <button class="clear-all-btn">
+                Clear All Tasks
+            </button>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
