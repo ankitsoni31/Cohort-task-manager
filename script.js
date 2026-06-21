@@ -15,8 +15,68 @@ const categoryTasks = document.querySelector(".category .stat-info p");
 
 let taskId = 1;
 
+function saveTasks() {
+    const cards = document.querySelectorAll(".task-card");
+    const tasks = [];
+    cards.forEach(card => {
+        tasks.push({
+            id: card.dataset.id,
+            title: card.querySelector("h3").textContent,
+            category: card.dataset.category,
+            status: card.dataset.status
+        });
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("taskId", taskId);
+}
 
-// ==================== UPDATE STATS ====================
+function loadTasks() {
+    const saved = localStorage.getItem("tasks");
+    const savedId = localStorage.getItem("taskId");
+
+    if (savedId) taskId = parseInt(savedId);
+
+    if (saved) {
+        const tasks = JSON.parse(saved);
+        tasks.forEach(task => {
+            createTaskCard(task.title, task.category, task.id, task.status);
+        });
+        updateStats();
+    }
+}
+
+
+function createTaskCard(taskTitle, category, id, status = "pending") {
+    const taskCard = document.createElement("div");
+    taskCard.classList.add("task-card");
+    taskCard.setAttribute("data-id", id);
+    taskCard.setAttribute("data-status", status);
+    taskCard.setAttribute("data-category", category);
+
+    const isCompleted = status === "completed";
+
+    taskCard.innerHTML = `
+        <div class="task-header">
+            <h3>${taskTitle}</h3>
+            <span class="task-id">ID: ${id}</span>
+        </div>
+        <div class="task-tags">
+            <span class="category-tag">${category}</span>
+            <span class="status-tag ${isCompleted ? "completed" : ""}">${isCompleted ? "Completed" : "Pending"}</span>
+        </div>
+        <div class="task-actions">
+            <button class="complete-btn" ${isCompleted ? "disabled" : ""}>
+                <i class="fa-solid fa-check"></i> ${isCompleted ? "Completed" : "Complete"}
+            </button>
+            <button class="delete-btn">
+                <i class="fa-solid fa-trash"></i> Delete
+            </button>
+        </div>
+    `;
+
+    tasksContainer.appendChild(taskCard);
+}
+
 
 function updateStats() {
 
@@ -43,7 +103,6 @@ function updateStats() {
 }
 
 
-// ==================== ADD TASK ====================
 
 form.addEventListener("submit", function (e) {
 
@@ -57,53 +116,19 @@ form.addEventListener("submit", function (e) {
         return;
     }
 
-    const taskCard = document.createElement("div");
-
-    taskCard.classList.add("task-card");
-
-    taskCard.setAttribute("data-id", taskId);
-    taskCard.setAttribute("data-status", "pending");
-    taskCard.setAttribute("data-category", category);
-
-    taskCard.innerHTML = `
-    
-        <div class="task-header">
-            <h3>${taskTitle}</h3>
-            <span class="task-id">ID: ${taskId}</span>
-        </div>
-
-        <div class="task-tags">
-            <span class="category-tag">${category}</span>
-            <span class="status-tag">Pending</span>
-        </div>
-
-        <div class="task-actions">
-
-            <button class="complete-btn">
-                <i class="fa-solid fa-check"></i> Complete
-            </button>
-
-            <button class="delete-btn">
-                <i class="fa-solid fa-trash"></i> Delete
-            </button>
-
-        </div>
-    
-    `;
-
-    tasksContainer.appendChild(taskCard);
+    createTaskCard(taskTitle, category, taskId);
 
     taskInput.value = "";
 
     taskId++;
 
     updateStats();
+    saveTasks();
     applyFilters();
 
 });
 
 
-// ==================== DELETE + COMPLETE ====================
 
 tasksContainer.addEventListener("click", function (e) {
 
@@ -111,25 +136,17 @@ tasksContainer.addEventListener("click", function (e) {
 
     if (!card) return;
 
-
-    // DELETE
-
     if (e.target.closest(".delete-btn")) {
-
         card.remove();
-
         updateStats();
+        saveTasks();
     }
-
-
-    // COMPLETE
 
     if (e.target.closest(".complete-btn")) {
 
         card.dataset.status = "completed";
 
         const statusTag = card.querySelector(".status-tag");
-
         statusTag.textContent = "Completed";
         statusTag.classList.remove("pending");
         statusTag.classList.add("completed");
@@ -139,37 +156,29 @@ tasksContainer.addEventListener("click", function (e) {
         completeBtn.disabled = true;
 
         updateStats();
+        saveTasks();
         applyFilters();
     }
 
 });
 
 
-// ==================== CLEAR ALL ====================
-
 clearAllBtn.addEventListener("click", function () {
 
-    const confirmDelete = confirm(
-        "Are you sure you want to delete all tasks?"
-    );
+    const confirmDelete = confirm("Are you sure you want to delete all tasks?");
 
     if (!confirmDelete) return;
 
     tasksContainer.innerHTML = "";
-
     taskId = 1;
 
     updateStats();
+    saveTasks();
 
 });
 
 
-// ==================== SEARCH TASK ====================
-
 searchInput.addEventListener("input", applyFilters);
-
-
-// ==================== CATEGORY + STATUS FILTER ====================
 
 const categoryFilter = document.querySelector(".category-filter");
 const statusFilter = document.querySelector(".status-filter");
@@ -195,16 +204,16 @@ function applyFilters() {
 
         const matchCategory =
             selectedCategory === "" ||
-            selectedCategory === "all categories" ||
+            selectedCategory.includes("all") ||
             cardCategory === selectedCategory;
 
         const matchStatus =
             selectedStatus === "" ||
-            selectedStatus === "all status" ||
+            selectedStatus.includes("all") ||
             cardStatus === selectedStatus;
 
         card.style.display = (matchSearch && matchCategory && matchStatus)
-            ? "block"
+            ? ""
             : "none";
 
     });
@@ -212,12 +221,11 @@ function applyFilters() {
 }
 
 
-// ==================== THEME TOGGLE (Light/Dark) ====================
+
 
 const themeBtn = document.querySelector(".theme-btn");
 const themeIcon = themeBtn.querySelector("i");
 
-// Restore saved theme
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
     document.body.classList.add("dark");
@@ -240,7 +248,7 @@ themeBtn.addEventListener("click", function () {
 });
 
 
-// ==================== MOBILE SIDEBAR MENU ====================
+
 
 const menuBtn = document.querySelector(".menu-btn");
 const sidebar = document.querySelector(".sidebar");
@@ -260,7 +268,6 @@ if (overlay) {
     });
 }
 
-// Close sidebar on nav link click (mobile)
 document.querySelectorAll(".nav-menu a").forEach(link => {
     link.addEventListener("click", () => {
         sidebar.classList.remove("open");
@@ -269,6 +276,5 @@ document.querySelectorAll(".nav-menu a").forEach(link => {
 });
 
 
-// ==================== INITIAL ====================
 
-updateStats();
+loadTasks();
